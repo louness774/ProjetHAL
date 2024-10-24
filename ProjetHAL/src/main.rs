@@ -1,18 +1,25 @@
 mod gpio;
+use avr_device::atmega328p::Peripherals; // Importation des périphériques AVR
+use gpio::{GpioPin, PinMode};
 
 fn main() {
-    let pin = 2;
+    // Obtenir les périphériques AVR
+    let dp = Peripherals::take().unwrap();
+    
+    // Utiliser le bloc de registre PORTB du périphérique
+    let pin2 = GpioPin::new(&dp.PORTB, 2, PinMode::Output); // Initialisation en sortie
 
-    // Configurer la broche 2 comme sortie
-    gpio::configurer_pin_en_sortie(pin);
-    gpio::ecrire_pin(pin, true);  // Écrire un signal HAUT sur la broche 2
+    // Écrire une valeur HIGH sur la broche
+    pin2.write(true);
 
-    let valeur_lue = gpio::lire_pin(pin);
-    println!("La valeur lue sur la broche {} est : {}", pin, valeur_lue);
-
-    // Maintenant on va tester la broche comme entrée
-    gpio::configurer_pin_en_entree(pin);
-    println!("Broche {} configurée comme entrée.", pin);
+    // Lire l'état de la broche
+    let is_high = pin2.read();
+    if is_high {
+        println!("La broche est HIGH");
+    } else {
+        println!("La broche est LOW");
+    }
 }
+
 
 

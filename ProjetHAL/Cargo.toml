@@ -8,5 +8,9 @@ edition = "2021"
 [dependencies]
 embedded-hal = { version = "0.2", features = ["unproven"] }  # HAL embarqué pour la gestion des périphériques
 avr-device = { version = "0.3", features = ["atmega328p"] }  # Gestion du microcontrôleur Atmega328p
+[profile.release]
+panic = "abort"
+
+
 
 
